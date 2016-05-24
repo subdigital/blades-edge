@@ -12,6 +12,11 @@ public class WorldObjectSelection : MonoBehaviour {
 	void Update () {
 	
 		if (Input.GetMouseButtonDown (0)) {
+
+			if (player.hud.IsMouseInHUDBounds ()) {
+				return;
+			}
+
 			WorldObject wob = FindHitObject();
 			if (wob) {
 				Debug.Log ("Hit object: " + wob);
@@ -19,14 +24,12 @@ public class WorldObjectSelection : MonoBehaviour {
 					player.SelectObject (wob);
 				}
 			} else if (HitGround()) {
-				player.SelectObject(null);
+				player.ClearSelection ();
 			} else {
 				Debug.Log ("Nada");
 			}
 
 		}
-	
-
 	}
 
 	WorldObject FindHitObject() {

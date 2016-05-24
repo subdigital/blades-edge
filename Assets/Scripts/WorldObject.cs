@@ -8,6 +8,8 @@ public class WorldObject : MonoBehaviour
 	Canvas canvas;
 	Slider healthSlider;
 
+	public RTS.Action[] actions;
+
 	void Awake() {
 		canvas = GetComponentInChildren<Canvas> ();
 		if (canvas) {
@@ -31,6 +33,8 @@ public class WorldObject : MonoBehaviour
 			canvas.enabled = selected;
 		}
 	}
-}
 
+	public virtual void PerformAction(RTS.Action action) {
+	}
+}
 
