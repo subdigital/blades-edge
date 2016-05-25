@@ -31,11 +31,12 @@ public class WorldObjectSelection : MonoBehaviour {
 	}
 
 	void SelectObject(WorldObject wob) {
-		if (player.SelectedObject != wob) {
-			player.SelectObject (wob);
-
-			AddSelectionRing (wob);
+		if (player.SelectedObject && player.SelectedObject != wob) {
+			ClearSelection ();
 		}
+
+		player.SelectObject (wob);
+		AddSelectionRing (wob);
 	}
 
 	void AddSelectionRing(WorldObject wob) {
@@ -51,13 +52,16 @@ public class WorldObjectSelection : MonoBehaviour {
 
 		var ring = (GameObject)Instantiate (selectionIndicatorPrefab, objPosition, Quaternion.identity);
 
-
 		ring.transform.localScale = new Vector3 (maxSize * 1.75f, 1, maxSize * 1.75f);
 		ring.transform.SetParent (wob.transform);
 	}
 
 	void ClearSelection() {
-		player.ClearSelection ();
+		WorldObject wob = player.SelectedObject;
+		if (wob) {
+			Destroy (wob.GetComponentInChildren<SelectionRing> ().gameObject);
+			player.ClearSelection ();	
+		}
 	}
 
 	WorldObject FindHitObject() {
