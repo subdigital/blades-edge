@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class WorldObjectSelection : MonoBehaviour {
@@ -51,6 +51,7 @@ public class WorldObjectSelection : MonoBehaviour {
 		objPosition.y = 0.01f;
 
 		var ring = (GameObject)Instantiate (selectionIndicatorPrefab, objPosition, Quaternion.identity);
+
 
 		ring.transform.localScale = new Vector3 (maxSize * 1.75f, 1, maxSize * 1.75f);
 		ring.transform.SetParent (wob.transform);
