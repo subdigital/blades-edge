@@ -9,7 +9,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 448090}
   - 33: {fileID: 3381532}
-  - 65: {fileID: 6572296}
   - 23: {fileID: 2301008}
   m_Layer: 0
   m_Name: Cube
@@ -27,7 +26,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 468628}
   - 33: {fileID: 3348202}
-  - 135: {fileID: 13506636}
   - 23: {fileID: 2331948}
   m_Layer: 0
   m_Name: Sphere
@@ -46,6 +44,7 @@ GameObject:
   - 4: {fileID: 477656}
   - 54: {fileID: 5403774}
   - 114: {fileID: 11492718}
+  - 65: {fileID: 6591318}
   m_Layer: 0
   m_Name: Worker
   m_TagString: Untagged
@@ -85,7 +84,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 180620}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -441.125, y: 0, z: -82}
+  m_LocalPosition: {x: -386.6, y: -0, z: -67.9}
   m_LocalScale: {x: 5, y: 5, z: 5}
   m_Children:
   - {fileID: 448090}
@@ -172,18 +171,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 84
   m_CollisionDetection: 0
---- !u!65 &6572296
+--- !u!65 &6591318
 BoxCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 129444}
+  m_GameObject: {fileID: 180620}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 1.83, z: 1}
+  m_Center: {x: 0, y: 0.91, z: 0}
 --- !u!114 &11492718
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -196,18 +195,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actions: []
---- !u!135 &13506636
-SphereCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 147968}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
