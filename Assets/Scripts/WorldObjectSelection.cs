@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.EventSystems;
 
 public class WorldObjectSelection : MonoBehaviour {
 
@@ -10,6 +11,7 @@ public class WorldObjectSelection : MonoBehaviour {
 	Vector2 dragStart;
 	Vector2 dragEnd;
 
+
 	void Start () {
 		player = GetComponent<Player> ();
 	}
@@ -17,8 +19,7 @@ public class WorldObjectSelection : MonoBehaviour {
 	void Update () {
 	
 		if (Input.GetMouseButtonDown (0)) {
-
-			if (player.hud.IsMouseInHUDBounds ()) {
+			if (EventSystem.current.IsPointerOverGameObject()) {
 				return;
 			}
 
