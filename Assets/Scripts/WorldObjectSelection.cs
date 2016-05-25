@@ -40,12 +40,20 @@ public class WorldObjectSelection : MonoBehaviour {
 	}
 
 	void AddSelectionRing(WorldObject wob) {
-		
-		Bounds bounds = new Bounds (wob.transform.position, Vector3.zero);
-		foreach (MeshRenderer r in wob.GetComponentsInChildren<MeshRenderer>()) {
+
+		MeshRenderer[] renderers = wob.GetComponentsInChildren<MeshRenderer> ();
+		if (renderers.Length == 0) {
+			Debug.LogWarning (wob.name + " has no mesh renderers");
+			return;
+		}
+		Bounds bounds = renderers [0].bounds;
+		for (int i = 1; i < renderers.Length; i++) {
+			MeshRenderer r = renderers [i];
 			bounds.Encapsulate (r.bounds);
 		}
+
 		float maxSize = Mathf.Max (bounds.size.x, bounds.size.z);
+
 
 		Vector3 objPosition = bounds.center;
 		objPosition.y = 0.01f;
