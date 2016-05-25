@@ -6,6 +6,9 @@ public class WorldObjectSelection : MonoBehaviour {
 	public GameObject selectionIndicatorPrefab;
 
 	Player player;
+	bool dragging;
+	Vector2 dragStart;
+	Vector2 dragEnd;
 
 	void Start () {
 		player = GetComponent<Player> ();
@@ -24,9 +27,20 @@ public class WorldObjectSelection : MonoBehaviour {
 				SelectObject (wob);
 			} else if (HitGround()) {
 				ClearSelection ();
-			} else {
-				Debug.Log ("Nada");
 			}
+
+			dragging = true;
+			dragStart = Input.mousePosition;
+		}
+
+		if (dragging) {
+			dragEnd = Input.mousePosition;
+		}
+
+		if (Input.GetMouseButtonUp (0)) {
+			dragging = false;
+
+			// select things under selection box
 		}
 	}
 
@@ -37,6 +51,14 @@ public class WorldObjectSelection : MonoBehaviour {
 
 		player.SelectObject (wob);
 		AddSelectionRing (wob);
+	}
+
+	void OnGUI() {
+		if (dragging) {
+			var rect = Utils.ScreenDrawing.GetScreenRect (dragStart, dragEnd);
+			Utils.ScreenDrawing.DrawRect (rect, new Color (0.7f, 1.0f, 0.7f, 0.3f));
+			Utils.ScreenDrawing.DrawBox (rect, 3, new Color (0.8f, 1.0f, 0.8f, 0.5f));
+		}
 	}
 
 	void AddSelectionRing(WorldObject wob) {
