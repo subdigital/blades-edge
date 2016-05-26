@@ -28,7 +28,14 @@ public class WorldObject : MonoBehaviour
 		
 	}
 
+	void OnTriggerEnter(Collider other) {
+		Debug.Log ("collider: " + other.tag);
+	}
+
+	public bool Selected { get; private set; }
+
 	public void SetSelected(bool selected) {
+		Selected = selected;
 		if (canvas) {
 			canvas.enabled = selected;
 		}

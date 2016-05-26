@@ -1353,11 +1353,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22421072, guid: 7b8b662d633ab497c97ba94c892011fb, type: 2}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 22421072, guid: 7b8b662d633ab497c97ba94c892011fb, type: 2}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7b8b662d633ab497c97ba94c892011fb, type: 2}
@@ -1392,6 +1392,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selectionIndicatorPrefab: {fileID: 125432, guid: 66ec61d945c4b4a6a92f637881b45056,
     type: 2}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!114 &2045952046
 MonoBehaviour:
   m_ObjectHideFlags: 0

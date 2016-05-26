@@ -52,9 +52,8 @@ public class HUD : MonoBehaviour {
 		Vector3[] corners = new Vector3[4];
 		actionsPanel.GetLocalCorners (corners);
 		float yMax = 0;
-		Debug.Log ("Anchor : " + actionsPanel.anchoredPosition);
+
 		foreach (Vector3 corner in corners) {
-			Debug.Log ("Corner : " + corner);
 
 			float offsetY = corner.y + actionsPanel.anchoredPosition.y;
 			// Vector3 offsetCorner = actionsPanel.anchorMax
