@@ -10,7 +10,7 @@ GameObject:
   - 4: {fileID: 448090}
   - 33: {fileID: 3381532}
   - 23: {fileID: 2301008}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -27,7 +27,7 @@ GameObject:
   - 4: {fileID: 468628}
   - 33: {fileID: 3348202}
   - 23: {fileID: 2331948}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -45,7 +45,7 @@ GameObject:
   - 54: {fileID: 5403774}
   - 114: {fileID: 11492718}
   - 65: {fileID: 6591318}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Worker
   m_TagString: Untagged
   m_Icon: {fileID: 0}

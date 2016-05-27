@@ -1,35 +1,47 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Player : MonoBehaviour {
 
 	public HUD hud;
 
-	private WorldObject _selectedObject;
-	public WorldObject SelectedObject { get { return _selectedObject; } }
+	private HashSet<WorldObject> _selectedObjects;
+	public HashSet<WorldObject> SelectedObjects { get { return _selectedObjects; } }
 
 	void Start () {
 		hud = FindObjectOfType<HUD> ();
+		_selectedObjects = new HashSet<WorldObject> ();
 	}
 
 	void Update () {
 	
 	}
 		
-	public void SelectObject(WorldObject wob) {
+	public void SelectObject(WorldObject wob, bool replace = false) {
 		Debug.Assert (wob);
-		ClearSelection ();
+		if (replace) {
+			ClearSelection ();
+		}
 
-		hud.SetSelection(new WorldObject[] {wob});
-		_selectedObject = wob;
+		WorldObject[] wobs = new WorldObject [_selectedObjects.Count];
+		SelectedObjects.CopyTo (wobs);
+		hud.SetSelection(wobs);
+		_selectedObjects.Add (wob);
+
 		wob.SetSelected (true);
 	}
 
+	public void UnselectObject(WorldObject wob) {
+		wob.SetSelected (false);
+		SelectedObjects.Remove (wob);
+	}
+
 	public void ClearSelection() {
-		if (_selectedObject) {
-			_selectedObject.SetSelected (false);
-			_selectedObject = null;
+		foreach (var wob in SelectedObjects) {
+			wob.SetSelected (false);
 		}
+		SelectedObjects.Clear ();
 
 		hud.ClearSelection();
 	}
