@@ -72,22 +72,49 @@ public class WorldObjectSelection : MonoBehaviour {
 		return sphere;
 	}
 
+	bool enabledBoxCastVisual = true;
 	static GameObject _boxCastVisual;
 	void DragSelectBoxCast(Vector2 screenPos1, Vector2 screenPos2) {
+		if (screenPos1.x > screenPos2.x) {
+			// swap them
+			Vector2 tmp = screenPos1;
+			screenPos1 = screenPos2;
+			screenPos2 = tmp;
+		}
+
 		Vector3 wp1 = Camera.main.ScreenToWorldPoint (screenPos1);
-//		Vector3 wp2 = Camera.main.ScreenToWorldPoint (screenPos2);
-//		Vector3 wp3 = Camera.main.ScreenToWorldPoint (new Vector2(screenPos1.x, screenPos2.y));
-//		Vector3 wp4 = Camera.main.ScreenToWorldPoint (new Vector2(screenPos2.x, screenPos1.y));
+		Vector3 wp2 = Camera.main.ScreenToWorldPoint (screenPos2);
+		Vector3 wp3 = Camera.main.ScreenToWorldPoint (new Vector2(screenPos1.x, screenPos2.y));
+		Vector3 wp4 = Camera.main.ScreenToWorldPoint (new Vector2(screenPos2.x, screenPos1.y));
 		Vector3 wpcenter = Camera.main.ScreenToWorldPoint (
 			new Vector2(screenPos1.x + (screenPos2.x - screenPos1.x) / 2f,
 				screenPos1.y + (screenPos2.y - screenPos1.y) / 2f)
 		);
-				
-		Vector3 extents = new Vector3(wpcenter.x - wp1.x, wp1.y - wpcenter.y, 50);
+
+		Vector3 halfExtents = new Vector3(wpcenter.x - wp1.x, wp1.y - wpcenter.y, 25);
 
 		Vector3 direction = Camera.main.transform.forward;
 		Quaternion rotation = Quaternion.LookRotation (direction);
-		RaycastHit[] hits = Physics.BoxCastAll (wpcenter, extents / 2f, direction, rotation, Mathf.Infinity);
+		RaycastHit[] hits = Physics.BoxCastAll (wpcenter, halfExtents, direction, rotation, Mathf.Infinity);
+
+		if (_selectionMesh == null) {
+			_selectionMesh = CreateSelectionMeshObject ();
+		} else {
+			UpdateSelectionMesh (_selectionMesh, wp1, wp2, wp3, wp4);
+		}
+
+		if (enabledBoxCastVisual) {
+			if (_boxCastVisual == null) {
+				_boxCastVisual = GameObject.CreatePrimitive (PrimitiveType.Cube);
+				_boxCastVisual.GetComponent<MeshRenderer> ().material.color = Color.yellow;
+			}
+			_boxCastVisual.transform.transform.position = wpcenter;
+			_boxCastVisual.transform.localScale = halfExtents * 2.5f;
+			_boxCastVisual.transform.rotation = rotation;
+
+			// move it foward so we can see it
+			_boxCastVisual.transform.Translate (Vector3.forward * 100);
+		}
 
 		Debug.Log ("hits: " + hits.Length);
 
