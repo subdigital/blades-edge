@@ -78,11 +78,11 @@ public class Unit : WorldObject {
 		//pathVisual = (GameObject)Instantiate (pathVisualPrefab);
 		pathVisual = GameObject.CreatePrimitive(PrimitiveType.Cube);
 		pathVisual.GetComponent<MeshRenderer> ().sharedMaterial.color = Color.red;
+		pathVisual.GetComponent<Collider> ().enabled = false;
 		pathVisual.transform.SetParent (transform);
 		Vector3 pos = transform.position;
 		pos.y = 0.1f;
 		pathVisual.transform.position = pos;
-		pathVisual.transform.rotation = transform.rotation * Quaternion.Euler(0, 90f, 0);
 	}
 
 	void UpdatePathVisual() {
@@ -90,7 +90,9 @@ public class Unit : WorldObject {
 
 		Vector3 direction = targetPosition - transform.position;
 		float distance = direction.magnitude;
-		pathVisual.transform.position = transform.position + (targetPosition-transform.position)/2f;
+		Vector3 pos = transform.position + (targetPosition-transform.position)/2f;
+		pos.y = 0.1f;
+		pathVisual.transform.position = pos;
 		pathVisual.transform.localScale = new Vector3 (distance / 6, 1, 1);
 	}
 
