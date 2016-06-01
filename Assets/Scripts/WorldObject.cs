@@ -24,10 +24,6 @@ public class WorldObject : MonoBehaviour
 		}
 	}
 
-	void Update() {
-		
-	}
-
 	void OnTriggerEnter(Collider other) {
 		Debug.Log ("collider: " + other.tag);
 	}
@@ -39,6 +35,9 @@ public class WorldObject : MonoBehaviour
 		if (canvas) {
 			canvas.enabled = selected;
 		}
+	}
+
+	public virtual void HandleRightClick(Vector3 worldPosition, WorldObject hitObject) {
 	}
 
 	public virtual void PerformAction(RTS.Action action) {

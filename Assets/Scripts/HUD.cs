@@ -28,11 +28,14 @@ public class HUD : MonoBehaviour {
 		selection = wobs;
 
 		if (wobs.Length == 0) {
+			Debug.Log ("HUD: no selection");
 			selectionNameText.text = string.Empty;
 		} else if (wobs.Length == 1) {
+			Debug.Log ("HUD: 1 object selected");
 			ConfigureHUDForWorldObject (wobs [0]);
 
 		} else {
+			Debug.Log ("HUD: " + wobs.Length + " objects selected");
 			selectionNameText.text = "Multiple Selection";
 			// if all units are the same type, we can show the single selection UI
 		}
@@ -95,6 +98,10 @@ public class HUD : MonoBehaviour {
 	}
 
 	public void HandleAction(RTS.Action action) {
+		if (selection.Length == 0) {
+			return;
+		}
+
 		// for selected units pass action
 		// or
 		// player

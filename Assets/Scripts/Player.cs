@@ -23,18 +23,18 @@ public class Player : MonoBehaviour {
 		if (replace) {
 			ClearSelection ();
 		}
-
-		WorldObject[] wobs = new WorldObject [_selectedObjects.Count];
-		SelectedObjects.CopyTo (wobs);
-		hud.SetSelection(wobs);
+			
 		_selectedObjects.Add (wob);
 
 		wob.SetSelected (true);
+		UpdateHUDSelection ();
 	}
 
 	public void UnselectObject(WorldObject wob) {
 		wob.SetSelected (false);
 		SelectedObjects.Remove (wob);
+
+		UpdateHUDSelection ();
 	}
 
 	public void ClearSelection() {
@@ -46,4 +46,9 @@ public class Player : MonoBehaviour {
 		hud.ClearSelection();
 	}
 
+	void UpdateHUDSelection() {
+		WorldObject[] wobs = new WorldObject [_selectedObjects.Count];
+		SelectedObjects.CopyTo (wobs);
+		hud.SetSelection(wobs);
+	}
 }

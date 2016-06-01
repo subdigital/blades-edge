@@ -14,4 +14,14 @@ public class Building : WorldObject {
 		}
 
 	}
+
+	public override void HandleRightClick(Vector3 worldPosition, WorldObject hitObject) {
+		rallyPoint.position = worldPosition;
+	}
+
+	void Update() {
+		if (Selected) {
+			Debug.DrawLine (transform.position, rallyPoint.position, Color.red);
+		}
+	}
 }
