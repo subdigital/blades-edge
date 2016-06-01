@@ -197,6 +197,7 @@ MonoBehaviour:
   actions: []
   moveSpeed: 45
   rotationSpeed: 360
+  pathVisualPrefab: {fileID: 123668, guid: 0282c49838c6940c799dcb2b30050be8, type: 2}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

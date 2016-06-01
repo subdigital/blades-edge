@@ -30,7 +30,7 @@ public class WorldObject : MonoBehaviour
 
 	public bool Selected { get; private set; }
 
-	public void SetSelected(bool selected) {
+	public virtual void SetSelected(bool selected) {
 		Selected = selected;
 		if (canvas) {
 			canvas.enabled = selected;

@@ -21,7 +21,7 @@ public class Building : WorldObject {
 
 	void Update() {
 		if (Selected) {
-			Debug.DrawLine (transform.position, rallyPoint.position, Color.red);
+			Debug.DrawLine (spawnPoint.position, rallyPoint.position, Color.red);
 		}
 	}
 }
