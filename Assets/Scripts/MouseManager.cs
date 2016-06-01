@@ -14,6 +14,16 @@ public class MouseManager : MonoBehaviour {
 	Vector2 dragEnd;
 	HashSet<WorldObject> selectedObjectsThisFrame;
 
+	enum SelectionType {
+		None,
+		Units,
+		Buildings
+	};
+
+	// can only drag select units of the same type,
+	// the first one will be recorded here
+	SelectionType selectionType;
+
 	void Start () {
 		player = GetComponent<Player> ();
 		selectedObjectsThisFrame = new HashSet<WorldObject> ();
@@ -40,25 +50,27 @@ public class MouseManager : MonoBehaviour {
 				if (!wob.Selected) {
 					SelectObject (wob);
 				}
+				selectionType = SelectionType.None;
 			} else if (hitInfo.hitGround) {
 				ClearSelection ();
 				dragging = true;
 				dragStart = Input.mousePosition;
+				selectionType = SelectionType.None;
 			}
 		}
 
 		if (dragging) {
 			dragEnd = Input.mousePosition;
-
-			//DragSelect (dragStart, dragEnd);
 			DragSelectBoxCast(dragStart, dragEnd);
 		}
 
 		if (Input.GetMouseButtonUp (0)) {
 			dragging = false;
-			//Destroy (_selectionCube);
 
-			// select things under selection box
+			if (_selectionMesh) {
+				Destroy (_selectionMesh);
+				_selectionMesh = null;
+			}
 		}
 	}
 
@@ -96,6 +108,9 @@ public class MouseManager : MonoBehaviour {
 	static GameObject _boxCastVisual;
 
 	void DragSelectBoxCast(Vector2 screenPos1, Vector2 screenPos2) {
+
+		// normalize the positions so we always have a top-left -> bottom-right
+		// selection
 		Vector2 tmp = screenPos1;
 		screenPos1 = new Vector2 (
 			Mathf.Min (screenPos1.x, screenPos2.x), 
@@ -106,14 +121,6 @@ public class MouseManager : MonoBehaviour {
 			Mathf.Min (tmp.y, screenPos2.y)
 		);
 			
-
-//		if (screenPos1.x > screenPos2.x) {
-//			// swap them
-//			Vector2 tmp = screenPos1;
-//			screenPos1 = screenPos2;
-//			screenPos2 = tmp;
-//		}
-
 		Vector3 wp1 = Camera.main.ScreenToWorldPoint (screenPos1);
 		Vector3 wp2 = Camera.main.ScreenToWorldPoint (screenPos2);
 		Vector3 wp3 = Camera.main.ScreenToWorldPoint (new Vector2(screenPos1.x, screenPos2.y));
@@ -156,13 +163,25 @@ public class MouseManager : MonoBehaviour {
 
 		//var noLongerSelected = new HashSet<WorldObject> (player.SelectedObjects);
 		foreach (var hit in hits) {
-			var wob = hit.transform.root.GetComponentInChildren<WorldObject> ();
-			// noLongerSelected.Remove (wob);
-			selectedObjectsThisFrame.Add(wob);
 
-			if (wob) {
-				AddToSelection (wob);
+			var wob = hit.transform.root.GetComponentInChildren<WorldObject> ();
+			if (wob == null) {
+				continue;
 			}
+
+			if (selectionType == SelectionType.None) {
+				// set selection type from first unit hit
+				selectionType = WorldObjectSelectionType(wob);
+			}
+
+			if (WorldObjectSelectionType (wob) != selectionType) {
+				Debug.Log ("Skipping selection of " + wob.GetType () + " because it doesn't match the current selection type of " + selectionType);
+				continue;
+			}
+				
+			selectedObjectsThisFrame.Add(wob);
+			AddToSelection (wob);
+
 		}
 
 		var noLongerSelected = player.SelectedObjects.Where (x => !selectedObjectsThisFrame.Contains (x));
@@ -172,6 +191,17 @@ public class MouseManager : MonoBehaviour {
 			UnselectObject (wob);
 		}
 	}
+
+	SelectionType WorldObjectSelectionType(WorldObject wob) {
+		if (wob.GetType () == typeof(Unit) || wob.GetType().IsSubclassOf (typeof(Unit))) {
+			return SelectionType.Units;
+		} else if (wob.GetType () == typeof(Building) || wob.GetType ().IsSubclassOf (typeof(Building))) {
+			return SelectionType.Buildings;
+		}
+
+		Debug.LogError ("Undefined selection type for object: " + wob.GetType ());
+		return SelectionType.None;
+	}
 		
 	// this method is not used, but left for reference.
 	// it puts a mesh into the world where you select and would use
@@ -179,7 +209,7 @@ public class MouseManager : MonoBehaviour {
 	static GameObject _selectionMesh;
 	void DragSelect(Vector2 screenPos1, Vector2 screenPos2) {
 		// ray cast this to the ground so we can create a 3d collision cube in world space
-		Ray ray1 = Camera.main.ScreenPointToRay(screenPos1);
+		Ray ray1 = Camera.main.ScreenPointToRay (screenPos1);
 		Ray ray2 = Camera.main.ScreenPointToRay (screenPos2);
 		Ray ray3 = Camera.main.ScreenPointToRay (new Vector2 (screenPos1.x, screenPos2.y));
 		Ray ray4 = Camera.main.ScreenPointToRay (new Vector2 (screenPos2.x, screenPos1.y));
