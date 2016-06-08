@@ -104,7 +104,7 @@ public class MouseManager : MonoBehaviour {
 		return sphere;
 	}
 
-	bool enabledBoxCastVisual = false;
+	bool enabledBoxCastVisual = true;
 	static GameObject _boxCastVisual;
 
 	void DragSelectBoxCast(Vector2 screenPos1, Vector2 screenPos2) {
@@ -149,7 +149,7 @@ public class MouseManager : MonoBehaviour {
 				_boxCastVisual.GetComponent<MeshRenderer> ().material.color = Color.yellow;
 			}
 			_boxCastVisual.transform.transform.position = wpcenter;
-			_boxCastVisual.transform.localScale = halfExtents * 2.5f;
+			_boxCastVisual.transform.localScale = new Vector3 (halfExtents.x * 2, halfExtents.y * 2, 4);  // halfExtents * 2.5f;
 			_boxCastVisual.transform.rotation = rotation;
 
 			// move it foward so we can see it
