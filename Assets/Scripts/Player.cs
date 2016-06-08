@@ -43,10 +43,15 @@ public class Player : MonoBehaviour {
 		}
 		SelectedObjects.Clear ();
 
-		hud.ClearSelection();
+		if (hud) {
+			hud.ClearSelection();
+		}
 	}
 
 	void UpdateHUDSelection() {
+		if (!hud) {
+			return;
+		}
 		WorldObject[] wobs = new WorldObject [_selectedObjects.Count];
 		SelectedObjects.CopyTo (wobs);
 		hud.SetSelection(wobs);

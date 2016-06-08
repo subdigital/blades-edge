@@ -39,7 +39,7 @@ public class MouseManager : MonoBehaviour {
 	void HandleLeftClick() {
 		if (Input.GetMouseButtonDown (0)) {
 
-			if (player.hud.IsMouseInHUDBounds ()) {
+			if (player.hud && player.hud.IsMouseInHUDBounds ()) {
 				return;
 			}
 
@@ -382,7 +382,7 @@ public class MouseManager : MonoBehaviour {
 			WorldObject obj = rootOfHitObject.GetComponentInChildren<WorldObject> ();
 			if (obj) {
 				return new WorldObjectHitInfo(obj, hitInfo.point);
-			} else if (rootOfHitObject.gameObject.name == "Ground") {
+			} else if (rootOfHitObject.gameObject.layer == LayerMask.NameToLayer("Ground")) {
 				return new WorldObjectHitInfo (hitInfo.point);
 			}
 		} 

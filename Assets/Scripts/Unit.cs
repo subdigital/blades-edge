@@ -52,7 +52,7 @@ public class Unit : WorldObject {
 	public override void HandleRightClick (Vector3 position, WorldObject hitObject) {
 		Debug.Log ("RIGHT CLICK");
 		var navMeshAgent = GetComponent<NavMeshAgent> ();
-		if (navMeshAgent) {
+		if (navMeshAgent && navMeshAgent.enabled) {
 			navMeshAgent.destination = targetPosition;
 		} else {
 			moving = true;
@@ -66,6 +66,7 @@ public class Unit : WorldObject {
 
 	void AddPathVisual() {
 		if (pathVisual) {
+			Debug.Log ("Remove path");
 			RemovePathVisual ();
 		}
 
@@ -86,6 +87,8 @@ public class Unit : WorldObject {
 	}
 
 	void UpdatePathVisual() {
+		Debug.Log (transform);
+		Debug.Log (pathVisual);
 		pathVisual.transform.rotation = transform.rotation * Quaternion.Euler(0, 90f, 0);
 
 		Vector3 direction = targetPosition - transform.position;
