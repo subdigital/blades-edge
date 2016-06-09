@@ -9,8 +9,10 @@ public class CameraMovement : MonoBehaviour {
 	private GameObject _focusObject;
 	public GameObject FocusObject {
 		set {
-			_focusObject = value;
-			FocusOn (_focusObject);
+			if (_focusObject != value) {
+				_focusObject = value;
+				FocusOn (_focusObject);
+			}
 		}
 		get {
 			return _focusObject;
@@ -66,20 +68,29 @@ public class CameraMovement : MonoBehaviour {
 	}
 
 	void FocusOn(GameObject focusObject) {
+		Debug.Log ("Focus object position: " + focusObject.transform.position);
+
 		var cameraRig = transform;
 		var camera = cameraRig.GetComponentInChildren<Camera> ();
-		var cameraAngle = camera.transform.eulerAngles.x;
+		var cameraAngleX = camera.transform.eulerAngles.x;
+		var cameraRigAngleY = cameraRig.eulerAngles.y;
 
 		var height = camera.transform.position.y;
-		var distanceBack = Mathf.Tan (Mathf.Deg2Rad * cameraAngle) * height;
+		var distanceBack = Mathf.Tan (Mathf.Deg2Rad * cameraAngleX) * height;
+
+		var rotation = Quaternion.AngleAxis (cameraRigAngleY, Vector3.up);
+		var direction = rotation * Vector3.back;
 
 		Vector3 pos = cameraRig.transform.position;
-		pos.x = focusObject.transform.position.x;
-		pos.z = focusObject.transform.position.z - distanceBack;
-		Debug.Log ("angle:" + cameraAngle);
-		Debug.Log ("angle2:" + camera.transform.eulerAngles.x);
+
+		Vector3 newPos = focusObject.transform.position + direction * distanceBack;
+		newPos.y = pos.y;
+
+		Debug.Log ("angle:" + cameraAngleX);
 		Debug.Log ("camera height: " + height);
 		Debug.Log ("camera distance back: " + distanceBack);
-		cameraRig.transform.position = pos;
+		Debug.Log ("New position: " + newPos);
+
+		cameraRig.transform.position = newPos;
 	}
 }
